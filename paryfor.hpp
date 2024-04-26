@@ -60,6 +60,15 @@ static inline void spin_loop_pause() noexcept {
 }
 } // namespace atomic_queue
 } // namespace paryfor
+#elif defined(__loongarch64)
+namespace paryfor {
+namespace atomic_queue {
+constexpr int CACHE_LINE_SIZE = 64;
+static inline void spin_loop_pause() noexcept {
+    asm volatile ("nop" ::: "memory");
+}
+} // namespace atomic_queue
+} // namespace paryfor
 #else
 #error "Unknown CPU architecture."
 #endif
